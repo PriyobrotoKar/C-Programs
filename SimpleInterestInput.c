@@ -4,9 +4,8 @@ void main()
 {
     int P, t;
     float Si, r;
-    P = 1000;
-    t = 3;
-    r = 8.5;
+    printf("Enter the Principal Amount, Interest Rate and Time in years:\n");
+    scanf("%d %f %d", &P, &r, &t);
     Si = P * r * t / 100;
     printf("Simple Interest : %f", Si);
 }
