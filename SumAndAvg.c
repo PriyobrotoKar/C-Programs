@@ -12,6 +12,6 @@ void main()
     {
         sum += i;
     }
-    avg = sum / (float)n;
+    avg = (float)sum / n;
     printf("Sum = %d and Average = %f", sum, avg);
 }
