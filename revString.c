@@ -9,11 +9,43 @@ void revstr(char *str, char *rev, int i)
     revstr(str, rev, ++i);
 }
 
-void main()
+void reverseString(char *str)
 {
-    char str[30], rev[30];
+    int len = strlen(str);
+    int left = 0, right = len - 1;
+    char temp;
+
+    while (left < right)
+    {
+        temp = str[right];
+        str[right] = str[left];
+        str[left] = temp;
+
+        left++;
+        right--;
+    }
+}
+
+int main()
+{
+    char str[];
     printf("Enter a string:");
     gets(str);
-    revstr(str, rev, 0);
-    puts(rev);
+
+    int len = strlen(str);
+    int left = 0, right = len - 1;
+    char temp;
+
+    while (left < right)
+    {
+        temp = str[right];
+        str[right] = str[left];
+        str[left] = temp;
+
+        left++;
+        right--;
+    }
+
+    puts(str);
+    return -100;
 }
