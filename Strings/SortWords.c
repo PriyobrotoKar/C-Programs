@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
-void sortStringslexicographically(char words[][50], int size)
+void sortStringslexicographically(char (*words)[50], int size)
 {
     char temp[50];
     for (int j = 0; j < size - 1; j++)
@@ -22,21 +23,21 @@ void sortStringslexicographically(char words[][50], int size)
 
 void main()
 {
-    int r;
+    int total;
     printf("Enter the no. words:");
-    scanf("%d", &r);
-    char words[r][50];
+    scanf("%d", &total);
+    char(*words)[50] = malloc(total * sizeof(char *));
 
     int i = 0;
-    while (i < r)
+    while (i < total)
     {
         printf("Enter a word: ");
         scanf("%s", words[i]);
         i++;
     }
-    sortStringslexicographically(words, r);
+    sortStringslexicographically(words, total);
     i = 0;
-    while (i < r)
+    while (i < total)
     {
         printf("%s ", words[i]);
         i++;
