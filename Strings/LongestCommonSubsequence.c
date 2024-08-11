@@ -1,65 +1,81 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 
-char *slice(const char str[], int start)
+#define MAX 100
+
+void printLCS(char b[][MAX], char X[], int i, int j)
 {
-    int len = strlen(str);
-    if (start >= len)
+    if (i == 0 || j == 0)
     {
-        return "";
+        return;
     }
-    char *slicedStr = (char *)malloc((len - start + 1) * sizeof(char));
-    if (slicedStr == NULL)
+    if (b[i][j] == 'D')
     {
-        printf("Memory allocation failed\n");
-        exit(1);
+        printLCS(b, X, i - 1, j - 1);
+        printf("%c", X[i - 1]);
     }
-    strcpy(slicedStr, str + start);
-    return slicedStr;
-}
-
-char *LongestCommonSubsequence(char word1[], char word2[])
-{
-    if (strlen(word1) == 0 || strlen(word2) == 0)
+    else if (b[i][j] == 'U')
     {
-        return "";
-    }
-
-    if (word1[0] == word2[0])
-    {
-        char *remainderLCS = LongestCommonSubsequence(slice(word1, 1), slice(word2, 1));
-        char *result = (char *)malloc((strlen(remainderLCS) + 2) * sizeof(char));
-        if (result == NULL)
-        {
-            printf("Memory allocation failed\n");
-            exit(1);
-        }
-        result[0] = word1[0];
-        strcpy(result + 1, remainderLCS);
-        return result;
+        printLCS(b, X, i - 1, j);
     }
     else
     {
-        char *seq1 = LongestCommonSubsequence(slice(word1, 1), word2);
-        char *seq2 = LongestCommonSubsequence(word1, slice(word2, 1));
+        printLCS(b, X, i, j - 1);
+    }
+}
 
-        if (strlen(seq1) >= strlen(seq2))
+void LCS(char X[], char Y[])
+{
+    int m = strlen(X);
+    int n = strlen(Y);
+    int c[MAX][MAX];
+    char b[MAX][MAX];
+
+    for (int i = 0; i <= m; i++)
+    {
+        c[i][0] = 0;
+    }
+
+    for (int j = 0; j <= n; j++)
+    {
+        c[0][j] = 0;
+    }
+
+    for (int i = 1; i <= m; i++)
+    {
+        for (int j = 1; j <= n; j++)
         {
-            return seq1;
-        }
-        else
-        {
-            return seq2;
+            if (X[i - 1] == Y[j - 1])
+            {
+                c[i][j] = c[i - 1][j - 1] + 1;
+                b[i][j] = 'D';
+            }
+            else if (c[i - 1][j] >= c[i][j - 1])
+            {
+                c[i][j] = c[i - 1][j];
+                b[i][j] = 'U';
+            }
+            else
+            {
+                c[i][j] = c[i][j - 1];
+                b[i][j] = 'L';
+            }
         }
     }
+
+    printf("Length of LCS: %d\n", c[m][n]);
+
+    printf("LCS: ");
+    printLCS(b, X, m, n);
+    printf("\n");
 }
 
 int main()
 {
-    char str1[] = "abcdef";
-    char str2[] = "abe";
-    char *ans = LongestCommonSubsequence(str1, str2);
-    printf(ans, "%s");
+    char X[] = "abcdef";
+    char Y[] = "bdf";
+
+    LCS(X, Y);
+
     return 0;
 }
