@@ -394,3 +394,121 @@ int main()
 1 - 4 5 
 Total Cost: 16
 ```
+
+## Question
+**Write a C program to implement the Floyd Warshall Algorithm to calculate the shortest distances between every pair of nodes.**
+
+## Algorithm
+```bash
+STEP 1: Initialize dist[i][j] as the input distance matrix.
+STEP 2: Loop through k from 0 to V-1.
+STEP 3: For each k, loop through i from 0 to V-1.
+STEP 4: For each i, loop through j from 0 to V-1.
+STEP 5: Check if dist[i][k] + dist[k][j] < dist[i][j].
+STEP 6: If true, update dist[i][j] = dist[i][k] + dist[k][j].
+STEP 7: Continue until all loops are complete.
+STEP 8: Print the final dist matrix.
+```
+
+### Recurrence Mathematical Equation
+At each step, this recurrence relation ensures that the distance between any two vertices is updated to the minimum possible value, considering all intermediate vertices up to k. As the algorithm proceeds, it gradually considers more intermediate vertices, progressively refining the shortest distances between all pairs of vertices.
+
+```
+Distance[i, j] = min(Distance[i, j], Distance[i, k] + Distance[k, j])
+```
+where,
+Distance[i][j] represents the shortest path from vertex i to vertex j.
+Distance[i][k] + Distance[k][j] represents a possible shorter path from i to j by going through vertex k.
+
+## Complexity Analysis
+### Time Complexity
+The algorithm contains three nested loops: the outer loop over k, and two inner loops over i and j.
+Each loop runs from 0 to V - 1, where V is the number of vertices in the graph.
+So, for each combination of i, j, and k, the algorithm performs a constant time operation (comparison and possibly updating the shortest path).
+
+The overall number of iterations is:
+`V×V×V=V^3`
+ 
+Overall Time Complexity:
+
+Since the algorithm performs a constant amount of work in each iteration of the innermost loop, the total time complexity is:
+O(V^3)
+
+### Space Complexity
+Distance Matrix: The algorithm uses a 2D matrix dist[i][j] of size V × V to store the shortest path distances between every pair of vertices.
+This matrix requires space proportional to the number of vertices, i.e., O(V^2).
+
+No Additional Space for Recursion:
+The algorithm operates iteratively, so there is no additional space required for recursion or storing large auxiliary data structures.
+Space Complexity:
+
+The overall space complexity is determined by the size of the dist matrix, which is:
+O(V^2)
+
+## Source Code
+```C
+#include <stdio.h>
+
+#define V 4
+
+#define INF 99999
+
+void printSolution(int dist[][V])
+{
+    printf(
+        "The shortest distances:\n");
+    for (int i = 0; i < V; i++)
+    {
+        for (int j = 0; j < V; j++)
+        {
+            if (dist[i][j] == INF)
+                printf("%7s", "INF");
+            else
+                printf("%7d", dist[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void floydWarshall(int dist[][V])
+{
+    int i, j, k;
+
+    for (k = 0; k < V; k++)
+    {
+        for (i = 0; i < V; i++)
+        {
+            for (j = 0; j < V; j++)
+            {
+                if (dist[i][k] + dist[k][j] < dist[i][j])
+                    dist[i][j] = dist[i][k] + dist[k][j];
+            }
+        }
+    }
+
+    printSolution(dist);
+}
+
+int main()
+{
+    int graph[V][V] = {{0, 5, INF, 10},
+                       {INF, 0, 3, INF},
+                       {INF, INF, 0, 1},
+                       {INF, INF, INF, 0}};
+
+    floydWarshall(graph);
+    return 0;
+}
+```
+
+## Output
+```bash
+The shortest distances:
+      0      5      8      9
+    INF      0      3      4
+    INF    INF      0      1
+    INF    INF    INF      0
+```
+
+## Discussion
+
