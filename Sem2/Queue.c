@@ -4,6 +4,8 @@
 int queue[10];
 int front = -1, rear = -1;
 
+
+
 void insert(int data)
 {
     if (front == -1 && rear == -1)
